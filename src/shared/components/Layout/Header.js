@@ -8,7 +8,7 @@ const Header = () => {
     const navigate = useNavigate();
 
     const onClickSubmit=(e)=>{
-        e.preventDefault();//ngăn chặn submit
+        e.preventDefault();//ngan chan submit va tai lai toan trang
          navigate(`/Search?keyword=${keyword}`);
         setKeyword("");
 

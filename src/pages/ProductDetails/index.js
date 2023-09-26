@@ -4,17 +4,18 @@ import moment from "moment";
 import { getImageProduct } from "../../shared/ultils";
 import { useParams } from "react-router-dom";
 const ProductDetails = () => {
-    const [product, setProduct] = React.useState({});
-    const [comments, setComments] = React.useState([]);
-    const [data, setData] = React.useState({});
     const params = useParams();
     const id = params.id;
+    const [product, setProduct] = React.useState({});//khoi tao bien product luu thong tin san pham {} tra ve doi tuong rong
+    const [comments, setComments] = React.useState([]);//khoi bien tao comment [] chi mang rong
+    const [data, setData] = React.useState({});
+    
     const getComments = (id)=>{
         getCommentsProduct(id, {}).then(({ data }) => {
             return setComments(data.data.docs);
         });
-    }
-    useEffect(() => {
+    }//lay comment va in ra
+    React.useEffect(() => {
         // Get Product
         getProduct(id, {}).then(({ data }) => {
             return setProduct(data.data);
@@ -29,10 +30,10 @@ const ProductDetails = () => {
          console.log(data);
 
 
-    }
+    }//ham nhap cmt
 
     const onSubmitComment = (e)=>{
-        e.preventDefault();
+        e.preventDefault();//khi gui submit se ko reload ca trang
         createCommentProduct(id, data, {}).then(({data})=>{
             if(data.status=="success") setData("");
             getComments(id);
@@ -113,34 +114,25 @@ const ProductDetails = () => {
                     </div>
                     {/*	End Comment	*/}
                     {/*	Comments List	*/}
-                    {
-                        comments.length && (
-                            <div id="comments-list" className="row">
-                                <div className="col-lg-12 col-md-12 col-sm-12">
-                                    {
-                                        comments.map((comment, index) =>{
-                                            const m = moment(comment.createdAt);
-                                            return (
-                                                <div className="comment-item">
-                                                <ul>
-                                                    <li><b>{comment.name}</b></li>
-                                                    <li>{m.fromNow()}</li>
-                                                    <li>
-                                                        {comment.content}
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            )
-                                        }
-                                            
-                                        )
-                                    }
-
-
+                    <div id="comments-list" className="row">
+                        <div className="col-lg-12 col-md-12 col-sm-12">
+                            {comments.map((cmt) =>{ 
+                                
+                                return (
+                                <div className="comment-item">
+                                    <ul>
+                                        <li><b>{cmt.name}</b></li>
+                                        <li>{moment(cmt.updatedAt).fromNow()}</li>
+                                        <li>
+                                            <p>{cmt.content}</p>
+                                        </li>
+                                    </ul>
                                 </div>
-                            </div>
-                        )
-                    }
+                            )})
+
+                            }
+                        </div>
+                    </div>
                     {/*	End Comments List	*/}
                 </div>
                 {/*	End Product	*/}
