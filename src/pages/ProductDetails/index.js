@@ -2,10 +2,32 @@ import React, { useEffect } from "react";
 import { getProduct, getCommentsProduct, createCommentProduct } from "../../services/Api";
 import moment from "moment";
 import { getImageProduct } from "../../shared/ultils";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate, Navigate } from "react-router-dom";
+import { ADD_TO_CART } from "../../shared/constants/action-type";
+import { useDispatch } from "react-redux";
+
+
 const ProductDetails = () => {
+    const navigate = useNavigate();
     const params = useParams();
     const id = params.id;
+    const dispatch=useDispatch();
+    const addToCart=(type)=>{
+        const {name,image,price}=product;
+        dispatch({
+            type:ADD_TO_CART,
+            payload:{
+                _id:id,
+                name,
+                image,
+                price,
+                qty:1,
+            },
+        });
+        if(type==="buy-now"){
+            return navigate("/Cart")
+        }
+    }
     const [product, setProduct] = React.useState({});//khoi tao bien product luu thong tin san pham {} tra ve doi tuong rong
     const [comments, setComments] = React.useState([]);//khoi bien tao comment [] chi mang rong
     const [data, setData] = React.useState({});
@@ -67,7 +89,16 @@ const ProductDetails = () => {
                                 }
 
                             </ul>
-                            <div id="add-cart"><a href="#">Mua ngay</a></div>
+                            <div id="add-cart">
+	<button onClick={()=>addToCart("buy-now")} className="btn btn-warning mr-2">
+		Mua ngay
+	</button>
+
+	<button onClick={addToCart} className="btn btn-info">
+		Thêm vào giỏ hàng
+	</button>
+</div>
+
                         </div>
                     </div>
                     <div id="product-body" className="row">

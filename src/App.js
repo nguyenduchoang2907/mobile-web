@@ -8,6 +8,9 @@ import Menu from "./shared/components/Layout/Menu";
 import Sidebar from "./shared/components/Layout/Sidebar";
 import Slider from "./shared/components/Layout/Slider";
 
+import { Provider } from "react-redux";
+import store from "./redux-setup/store";
+
 // Import Pages
 import Home from "./pages/Home";
 import Category from "./pages/Category";
@@ -17,10 +20,11 @@ import Cart from "./pages/Cart";
 import Success from "./pages/Success";
 import NotFound from "./pages/NotFound";
 
+
 const App = () => {
 
   return (
-    <>
+    <Provider store={store}>
       <BrowserRouter>
         <div>
           <Header />
@@ -56,7 +60,7 @@ const App = () => {
           <Footer />
         </div>
       </BrowserRouter>
-    </>
+   </Provider>
   )
 }
 
